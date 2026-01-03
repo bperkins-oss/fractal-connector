@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractal Connector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon .material-icons {
+            font-size: 28px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #888;
+        }
+
+        .status-dot.connected {
+            background: #00c853;
+            box-shadow: 0 0 10px #00c853;
+        }
+
+        .status-dot.disconnected {
+            background: #ff5252;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #1e1e3a, #151528);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2 .material-icons {
+            color: #00d4ff;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            background: #1a1a2e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+
+        .form-input::placeholder {
+            color: #666;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .btn-danger {
+            background: rgba(255, 82, 82, 0.2);
+            color: #ff5252;
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 82, 82, 0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Dynamic Fields */
+        .dynamic-fields {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px dashed rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .dynamic-fields-header {
+            font-size: 0.8rem;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        /* Source List */
+        .source-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .source-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .source-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .source-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(123, 44, 191, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .source-icon .material-icons {
+            color: #7b2cbf;
+        }
+
+        .source-name {
+            font-weight: 500;
+        }
+
+        .source-type {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .source-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .source-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .source-actions button {
+            padding: 8px;
+            background: transparent;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .source-actions button:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        .source-actions button.delete:hover {
+            border-color: #ff5252;
+            color: #ff5252;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-state .material-icons {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        /* Messages */
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .message.success {
+            background: rgba(0, 200, 83, 0.15);
+            border: 1px solid rgba(0, 200, 83, 0.3);
+            color: #00c853;
+        }
+
+        .message.error {
+            background: rgba(255, 82, 82, 0.15);
+            border: 1px solid rgba(255, 82, 82, 0.3);
+            color: #ff5252;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Plugin Selector */
+        .plugin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .plugin-option {
+            padding: 20px 15px;
+            background: rgba(255,255,255,0.03);
+            border: 2px solid #333;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .plugin-option:hover {
+            border-color: #7b2cbf;
+            background: rgba(123, 44, 191, 0.1);
+        }
+
+        .plugin-option.selected {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .plugin-option .material-icons {
+            font-size: 32px;
+            color: #7b2cbf;
+            margin-bottom: 10px;
+        }
+
+        .plugin-option .name {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <span class="material-icons">hub</span>
+                </div>
+                <h1>Fractal Connector</h1>
+            </div>
+            <div class="status-badge">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Connecting...</span>
+            </div>
+        </header>
+
+        <!-- Fractal Connection -->
+        <div class="card">
+            <h2><span class="material-icons">cloud</span> Fractal Cloud Connection</h2>
+            <div id="fractalMessage" class="message hidden"></div>
+            <div class="form-group">
+                <label class="form-label">Fractal Server URL</label>
+                <input type="text" class="form-input" id="fractalUrl" placeholder="wss://fractal.example.com/ws">
+            </div>
+            <div class="form-group">
+                <label class="form-label">API Key</label>
+                <input type="password" class="form-input" id="apiKey" placeholder="Enter your API key">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveFractalConfig()">
+                    <span class="material-icons">save</span> Save
+                </button>
+            </div>
+        </div>
+
+        <!-- Add Data Source -->
+        <div class="card">
+            <h2><span class="material-icons">add_circle</span> Add Data Source</h2>
+            <div id="addSourceMessage" class="message hidden"></div>
+
+            <div class="form-group">
+                <label class="form-label">Select Data Source Type</label>
+                <div class="plugin-grid" id="pluginGrid"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Connection Name</label>
+                <input type="text" class="form-input" id="sourceName" placeholder="e.g., Production Database">
+            </div>
+
+            <div id="credentialFields" class="dynamic-fields hidden">
+                <div class="dynamic-fields-header">Connection Credentials</div>
+                <div id="credentialFieldsContainer"></div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="testConnection()">
+                    <span class="material-icons">wifi_tethering</span> Test Connection
+                </button>
+                <button class="btn btn-primary" onclick="addSource()">
+                    <span class="material-icons">add</span> Add Source
+                </button>
+            </div>
+        </div>
+
+        <!-- Active Sources -->
+        <div class="card">
+            <h2><span class="material-icons">storage</span> Active Data Sources</h2>
+            <div id="sourceList" class="source-list">
+                <div class="empty-state">
+                    <span class="material-icons">inbox</span>
+                    <p>No data sources configured yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let plugins = [];
+        let selectedPlugin = null;
+
+        // Load initial data
+        async function init() {
+            await loadPlugins();
+            await loadSources();
+            await loadFractalConfig();
+            updateStatus();
+
+            // Poll status every 5 seconds
+            setInterval(updateStatus, 5000);
+        }
+
+        async function loadPlugins() {
+            try {
+                const res = await fetch('/api/plugins');
+                plugins = await res.json();
+                renderPluginGrid();
+            } catch (e) {
+                console.error('Failed to load plugins:', e);
+            }
+        }
+
+        function renderPluginGrid() {
+            const grid = document.getElementById('pluginGrid');
+            grid.innerHTML = plugins.map(p => `
+                <div class="plugin-option" data-plugin="${p.id}" onclick="selectPlugin('${p.id}')">
+                    <span class="material-icons">${p.icon || 'extension'}</span>
+                    <div class="name">${p.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectPlugin(pluginId) {
+            selectedPlugin = plugins.find(p => p.id === pluginId);
+
+            // Update UI selection
+            document.querySelectorAll('.plugin-option').forEach(el => {
+                el.classList.toggle('selected', el.dataset.plugin === pluginId);
+            });
+
+            // Render credential fields
+            renderCredentialFields();
+        }
+
+        function renderCredentialFields() {
+            const container = document.getElementById('credentialFieldsContainer');
+            const wrapper = document.getElementById('credentialFields');
+
+            if (!selectedPlugin || !selectedPlugin.credential_fields.length) {
+                wrapper.classList.add('hidden');
+                return;
+            }
+
+            wrapper.classList.remove('hidden');
+
+            container.innerHTML = selectedPlugin.credential_fields.map(field => {
+                let input = '';
+
+                if (field.type === 'select') {
+                    const options = field.options.map(opt =>
+                        `<option value="${opt.value}">${opt.label}</option>`
+                    ).join('');
+                    input = `<select class="form-select" id="cred_${field.name}">${options}</select>`;
+                } else if (field.type === 'checkbox') {
+                    input = `<input type="checkbox" id="cred_${field.name}" ${field.default ? 'checked' : ''}>`;
+                } else {
+                    const inputType = field.type === 'password' ? 'password' : 'text';
+                    input = `<input type="${inputType}" class="form-input" id="cred_${field.name}"
+                             placeholder="${field.placeholder || ''}" value="${field.default || ''}">`;
+                }
+
+                return `
+                    <div class="form-group">
+                        <label class="form-label">${field.label}${field.required ? ' *' : ''}</label>
+                        ${input}
+                        ${field.help_text ? `<small style="color: #666; font-size: 0.8rem;">${field.help_text}</small>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getCredentialValues() {
+            if (!selectedPlugin) return {};
+
+            const values = {};
+            selectedPlugin.credential_fields.forEach(field => {
+                const el = document.getElementById(`cred_${field.name}`);
+                if (el) {
+                    if (field.type === 'checkbox') {
+                        values[field.name] = el.checked;
+                    } else {
+                        values[field.name] = el.value;
+                    }
+                }
+            });
+            return values;
+        }
+
+        async function testConnection() {
+            if (!selectedPlugin) {
+                showMessage('addSourceMessage', 'Please select a data source type', 'error');
+                return;
+            }
+
+            const credentials = getCredentialValues();
+
+            try {
+                const res = await fetch('/api/sources/test', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        plugin_type: selectedPlugin.id,
+                        credentials: credentials
+                    })
+                });
+
+                const data = await res.json();
+                showMessage('addSourceMessage', data.message, data.success ? 'success' : 'error');
+            } catch (e) {
+                showMessage('addSourceMessage', 'Connection test failed', 'error');
+            }
+        }
+
+        async function addSource() {
+            if (!selectedPlugin) {
+                showMessage('addSourceMessage', 'Please select a data source type', 'error');
+                return;
+            }
+
+            const name = document.getElementById('sourceName').value;
+            if (!name) {
+                showMessage('addSourceMessage', 'Please enter a connection name', 'error');
+                return;
+            }
+
+            const credentials = getCredentialValues();
+
+            try {
+                const res = await fetch('/api/sources', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        plugin_type: selectedPlugin.id,
+                        name: name,
+                        credentials: credentials
+                    })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    showMessage('addSourceMessage', 'Data source added successfully!', 'success');
+                    document.getElementById('sourceName').value = '';
+                    await loadSources();
+                } else {
+                    showMessage('addSourceMessage', data.error, 'error');
+                }
+            } catch (e) {
+                showMessage('addSourceMessage', 'Failed to add data source', 'error');
+            }
+        }
+
+        async function loadSources() {
+            try {
+                const res = await fetch('/api/sources');
+                const sources = await res.json();
+                renderSources(sources);
+            } catch (e) {
+                console.error('Failed to load sources:', e);
+            }
+        }
+
+        function renderSources(sources) {
+            const list = document.getElementById('sourceList');
+
+            if (!sources.length) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <span class="material-icons">inbox</span>
+                        <p>No data sources configured yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = sources.map(s => {
+                const plugin = plugins.find(p => p.id === s.plugin_type);
+                return `
+                    <div class="source-item">
+                        <div class="source-info">
+                            <div class="source-icon">
+                                <span class="material-icons">${plugin?.icon || 'extension'}</span>
+                            </div>
+                            <div>
+                                <div class="source-name">${s.name}</div>
+                                <div class="source-type">${plugin?.name || s.plugin_type}</div>
+                            </div>
+                        </div>
+                        <div class="source-actions">
+                            <button onclick="deleteSource('${s.id}')" class="delete" title="Delete">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function deleteSource(sourceId) {
+            if (!confirm('Are you sure you want to remove this data source?')) return;
+
+            try {
+                await fetch(`/api/sources/${sourceId}`, {method: 'DELETE'});
+                await loadSources();
+            } catch (e) {
+                console.error('Failed to delete source:', e);
+            }
+        }
+
+        async function loadFractalConfig() {
+            try {
+                const res = await fetch('/api/config/fractal');
+                const config = await res.json();
+
+                document.getElementById('fractalUrl').value = config.url || '';
+                if (config.has_api_key) {
+                    document.getElementById('apiKey').placeholder = '(API key configured)';
+                }
+            } catch (e) {
+                console.error('Failed to load config:', e);
+            }
+        }
+
+        async function saveFractalConfig() {
+            const url = document.getElementById('fractalUrl').value;
+            const apiKey = document.getElementById('apiKey').value;
+
+            const body = {};
+            if (url) body.url = url;
+            if (apiKey) body.api_key = apiKey;
+
+            try {
+                const res = await fetch('/api/config/fractal', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(body)
+                });
+
+                const data = await res.json();
+                showMessage('fractalMessage', 'Configuration saved!', 'success');
+            } catch (e) {
+                showMessage('fractalMessage', 'Failed to save configuration', 'error');
+            }
+        }
+
+        async function updateStatus() {
+            try {
+                const res = await fetch('/api/status');
+                const status = await res.json();
+
+                const dot = document.getElementById('statusDot');
+                const text = document.getElementById('statusText');
+
+                if (status.fractal_connected) {
+                    dot.className = 'status-dot connected';
+                    text.textContent = 'Connected';
+                } else {
+                    dot.className = 'status-dot disconnected';
+                    text.textContent = 'Disconnected';
+                }
+            } catch (e) {
+                console.error('Failed to get status:', e);
+            }
+        }
+
+        function showMessage(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.className = `message ${type}`;
+            el.classList.remove('hidden');
+
+            setTimeout(() => {
+                el.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
