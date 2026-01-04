@@ -3,111 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setup - Fractal Connector</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#fbfbfd">
+    <title>Setup - Fractal</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --white: #ffffff;
+            --bg-primary: #fbfbfd;
+            --bg-secondary: #f5f5f7;
+            --bg-tertiary: #e8e8ed;
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-tertiary: #86868b;
+            --blue: #0071e3;
+            --blue-hover: #0077ed;
+            --green: #34c759;
+            --red: #ff3b30;
+            --border: rgba(0, 0, 0, 0.08);
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+            --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: var(--font);
+            font-size: 17px;
+            line-height: 1.47059;
+            font-weight: 400;
+            letter-spacing: -0.022em;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
+            padding: 24px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .setup-box {
-            background: linear-gradient(145deg, #1e1e3a, #151528);
-            border: 1px solid #333;
-            border-radius: 16px;
-            padding: 40px;
+
+        .setup-card {
             width: 100%;
-            max-width: 400px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 440px;
+            background: var(--white);
+            border-radius: 18px;
+            padding: 48px 40px;
+            box-shadow: var(--shadow);
         }
+
         .logo {
-            text-align: center;
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
         }
+
         .logo-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
-            border-radius: 12px;
-            margin: 0 auto 15px;
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #1d1d1f 0%, #424245 100%);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 32px;
+            color: var(--white);
+            margin-bottom: 16px;
         }
+
+        .logo-text {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
         h1 {
-            font-size: 1.5rem;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 0.007em;
+            color: var(--text-primary);
             text-align: center;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #888;
-            font-size: 0.9rem;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-size: 0.9rem;
-            color: #888;
             margin-bottom: 8px;
         }
-        input {
-            width: 100%;
-            padding: 14px;
-            background: #1a1a2e;
-            border: 1px solid #444;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1rem;
+
+        .subtitle {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 32px;
+            font-size: 15px;
         }
-        input:focus {
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            background: var(--bg-secondary);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: var(--font);
+            font-size: 17px;
             outline: none;
-            border-color: #00d4ff;
+            transition: all 0.2s ease;
         }
-        button {
+
+        .form-input:focus {
+            background: var(--white);
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
+        }
+
+        .form-input::placeholder { color: var(--text-tertiary); }
+
+        .form-hint {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-top: 8px;
+        }
+
+        .btn {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
+            height: 48px;
+            background: var(--blue);
             border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1rem;
-            font-weight: 600;
+            border-radius: 12px;
+            color: var(--white);
+            font-family: var(--font);
+            font-size: 17px;
+            font-weight: 500;
             cursor: pointer;
-            margin-top: 10px;
+            transition: all 0.2s ease;
+            margin-top: 8px;
         }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+
+        .btn:hover {
+            background: var(--blue-hover);
+            transform: scale(1.01);
         }
+
+        .btn:active {
+            transform: scale(0.99);
+        }
+
         .error {
-            background: rgba(255, 82, 82, 0.15);
-            border: 1px solid rgba(255, 82, 82, 0.3);
-            color: #ff5252;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            background: rgba(255, 59, 48, 0.08);
+            border: 1px solid rgba(255, 59, 48, 0.2);
+            color: var(--red);
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 24px;
             text-align: center;
         }
-        .hint {
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 5px;
+
+        .features {
+            margin-top: 32px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+        }
+
+        .features-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 16px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 14px;
+        }
+
+        .feature:last-child { margin-bottom: 0; }
+
+        .feature-icon {
+            width: 28px;
+            height: 28px;
+            background: rgba(52, 199, 89, 0.12);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green);
+            font-size: 14px;
+            flex-shrink: 0;
         }
     </style>
 </head>
 <body>
-    <div class="setup-box">
+    <div class="setup-card">
         <div class="logo">
-            <div class="logo-icon"></div>
+            <div class="logo-icon">F</div>
+            <span class="logo-text">Fractal</span>
         </div>
-        <h1>Welcome to Fractal Connector</h1>
-        <p class="subtitle">Set a password to secure your connector</p>
+
+        <h1>Get Started</h1>
+        <p class="subtitle">Create a password to secure your connector</p>
 
         {% if error %}
         <div class="error">{{ error }}</div>
@@ -115,16 +224,44 @@
 
         <form method="POST">
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" required autofocus>
-                <p class="hint">Minimum 6 characters</p>
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-input" placeholder="Create a password" required autofocus>
+                <p class="form-hint">Minimum 6 characters</p>
             </div>
             <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm" required>
+                <label class="form-label">Confirm Password</label>
+                <input type="password" name="confirm" class="form-input" placeholder="Confirm your password" required>
             </div>
-            <button type="submit">Set Password & Continue</button>
+            <button type="submit" class="btn">Continue</button>
         </form>
+
+        <div class="features">
+            <p class="features-title">What you get</p>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                Connect 25+ data sources
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                End-to-end encryption
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                Real-time synchronization
+            </div>
+        </div>
     </div>
 </body>
 </html>

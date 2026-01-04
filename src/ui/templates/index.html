@@ -3,431 +3,872 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fbfbfd">
     <title>Fractal Connector</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ============================================
+           APPLE + BAUHAUS DESIGN
+           Clean, minimal, geometric, functional
+           ============================================ */
+
+        :root {
+            /* Apple-inspired palette */
+            --white: #ffffff;
+            --bg-primary: #fbfbfd;
+            --bg-secondary: #f5f5f7;
+            --bg-tertiary: #e8e8ed;
+
+            /* Text hierarchy */
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-tertiary: #86868b;
+
+            /* Apple blue */
+            --blue: #0071e3;
+            --blue-hover: #0077ed;
+            --blue-light: rgba(0, 113, 227, 0.1);
+
+            /* Semantic */
+            --green: #34c759;
+            --green-light: rgba(52, 199, 89, 0.12);
+            --red: #ff3b30;
+            --red-light: rgba(255, 59, 48, 0.12);
+
+            /* Borders & shadows */
+            --border: rgba(0, 0, 0, 0.06);
+            --border-dark: rgba(0, 0, 0, 0.1);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+
+            /* Typography - SF Pro style */
+            --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+            /* Spacing - 8pt grid */
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+            --space-12: 48px;
+            --space-16: 64px;
+
+            /* Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+        }
+
+        /* Reset */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: var(--font);
+            font-weight: 400;
+            line-height: 1.47059;
+            letter-spacing: -0.022em;
+            color: var(--text-primary);
+            background: var(--bg-primary);
             min-height: 100vh;
-            color: #fff;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        header {
+        /* Layout */
+        .app {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 40px;
+            min-height: 100vh;
+        }
+
+        /* Sidebar - Clean Apple style */
+        .sidebar {
+            width: 260px;
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: var(--space-6);
+            border-bottom: 1px solid var(--border);
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: var(--space-3);
         }
 
         .logo-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
-            border-radius: 10px;
+            width: 36px;
+            height: 36px;
+            background: var(--text-primary);
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .logo-icon .material-icons {
-            font-size: 28px;
-        }
-
-        .logo h1 {
-            font-size: 1.5rem;
             font-weight: 600;
+            font-size: 18px;
+            color: var(--white);
         }
 
-        .status-badge {
+        .logo-text {
+            font-size: 21px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        /* Navigation */
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-4);
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-6);
+        }
+
+        .nav-title {
+            padding: var(--space-2) var(--space-3);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .nav-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            font-size: 0.85rem;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--blue-light);
+            color: var(--blue);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+        }
+
+        /* Status footer */
+        .sidebar-footer {
+            padding: var(--space-4);
+            border-top: 1px solid var(--border);
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-4);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
         }
 
         .status-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: #888;
+            background: var(--text-tertiary);
         }
 
-        .status-dot.connected {
-            background: #00c853;
-            box-shadow: 0 0 10px #00c853;
+        .status-dot.online {
+            background: var(--green);
         }
 
-        .status-dot.disconnected {
-            background: #ff5252;
+        .status-dot.offline {
+            background: var(--red);
         }
 
-        .card {
-            background: linear-gradient(145deg, #1e1e3a, #151528);
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
+        .status-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
         }
 
-        .card h2 {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
+        /* Main content */
+        .main {
+            flex: 1;
+            margin-left: 260px;
+            background: var(--bg-primary);
+        }
+
+        .main-header {
+            height: 64px;
+            padding: 0 var(--space-10);
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
 
-        .card h2 .material-icons {
-            color: #00d4ff;
+        .main-title {
+            font-size: 21px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
         }
 
-        /* Form Styles */
+        .main-content {
+            padding: var(--space-10);
+            max-width: 880px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: var(--space-12);
+        }
+
+        .section-header {
+            margin-bottom: var(--space-5);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+        }
+
+        .section-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        /* Cards - Apple style */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .card-body {
+            padding: var(--space-6);
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-5);
+        }
+
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: var(--space-5);
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
         }
 
         .form-label {
             display: block;
-            font-size: 0.85rem;
-            color: #aaa;
-            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-2);
         }
 
-        .form-input, .form-select {
+        .form-input {
             width: 100%;
-            padding: 12px 15px;
-            background: #1a1a2e;
-            border: 1px solid #444;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 0.95rem;
+            height: 44px;
+            padding: 0 var(--space-4);
+            background: var(--bg-secondary);
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
             font-family: inherit;
-            transition: border-color 0.2s;
+            font-size: 17px;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.2s ease;
         }
 
-        .form-input:focus, .form-select:focus {
-            outline: none;
-            border-color: #00d4ff;
+        .form-input:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .form-input:focus {
+            background: var(--white);
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px var(--blue-light);
         }
 
         .form-input::placeholder {
-            color: #666;
+            color: var(--text-tertiary);
         }
 
+        /* Buttons - Apple style */
         .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: var(--space-2);
+            height: 44px;
+            padding: 0 var(--space-6);
+            font-family: inherit;
+            font-size: 17px;
+            font-weight: 500;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
-            color: #fff;
+            background: var(--blue);
+            color: var(--white);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+            background: var(--blue-hover);
         }
 
         .btn-secondary {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
 
         .btn-secondary:hover {
-            background: rgba(255,255,255,0.15);
+            background: var(--bg-tertiary);
         }
 
-        .btn-danger {
-            background: rgba(255, 82, 82, 0.2);
-            color: #ff5252;
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            height: 36px;
+            padding: 0 var(--space-3);
         }
 
-        .btn-danger:hover {
-            background: rgba(255, 82, 82, 0.3);
+        .btn-ghost:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            background: transparent;
+            color: var(--text-tertiary);
+            border-radius: var(--radius-sm);
+        }
+
+        .btn-icon:hover {
+            background: var(--red-light);
+            color: var(--red);
         }
 
         .btn-group {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: var(--space-3);
+            margin-top: var(--space-6);
         }
 
-        /* Dynamic Fields */
-        .dynamic-fields {
-            background: rgba(0, 212, 255, 0.05);
-            border: 1px dashed rgba(0, 212, 255, 0.3);
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 15px;
+        /* Plugin grid - Bauhaus geometric */
+        .plugin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: var(--space-3);
         }
 
-        .dynamic-fields-header {
-            font-size: 0.8rem;
-            color: #00d4ff;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
+        .plugin-item {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        /* Source List */
+        .plugin-item:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .plugin-item.selected {
+            background: var(--blue-light);
+            border-color: var(--blue);
+        }
+
+        .plugin-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .plugin-item.selected .plugin-icon {
+            background: var(--blue);
+            color: var(--white);
+            box-shadow: none;
+        }
+
+        .plugin-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 0 var(--space-1);
+        }
+
+        .plugin-item.selected .plugin-name {
+            color: var(--blue);
+        }
+
+        /* Credentials panel */
+        .credentials-panel {
+            margin-top: var(--space-5);
+            padding: var(--space-5);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+        }
+
+        .credentials-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-4);
+        }
+
+        /* Source list */
         .source-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
         }
 
         .source-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 15px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 8px;
-            border: 1px solid #333;
+            padding: var(--space-4) var(--space-5);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s ease;
+        }
+
+        .source-item:last-child {
+            border-bottom: none;
+        }
+
+        .source-item:hover {
+            background: var(--bg-secondary);
         }
 
         .source-info {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: var(--space-4);
         }
 
         .source-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(123, 44, 191, 0.2);
-            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .source-icon .material-icons {
-            color: #7b2cbf;
+            font-size: 20px;
         }
 
         .source-name {
+            font-size: 17px;
             font-weight: 500;
+            color: var(--text-primary);
         }
 
         .source-type {
-            font-size: 0.8rem;
-            color: #888;
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        .source-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
         }
 
         .source-status {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.85rem;
-            color: #888;
+            gap: var(--space-2);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--green);
         }
 
-        .source-actions {
-            display: flex;
-            gap: 8px;
+        .source-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
         }
 
-        .source-actions button {
-            padding: 8px;
-            background: transparent;
-            border: 1px solid #444;
-            border-radius: 6px;
-            color: #888;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .source-actions button:hover {
-            border-color: #00d4ff;
-            color: #00d4ff;
-        }
-
-        .source-actions button.delete:hover {
-            border-color: #ff5252;
-            color: #ff5252;
-        }
-
-        /* Empty State */
+        /* Empty state */
         .empty-state {
             text-align: center;
-            padding: 40px;
-            color: #666;
+            padding: var(--space-16) var(--space-8);
         }
 
-        .empty-state .material-icons {
-            font-size: 48px;
-            margin-bottom: 15px;
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto var(--space-4);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
         }
 
-        /* Messages */
-        .message {
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
+        .empty-text {
+            font-size: 17px;
+            color: var(--text-tertiary);
         }
 
-        .message.success {
-            background: rgba(0, 200, 83, 0.15);
-            border: 1px solid rgba(0, 200, 83, 0.3);
-            color: #00c853;
-        }
-
-        .message.error {
-            background: rgba(255, 82, 82, 0.15);
-            border: 1px solid rgba(255, 82, 82, 0.3);
-            color: #ff5252;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Plugin Selector */
-        .plugin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .plugin-option {
-            padding: 20px 15px;
-            background: rgba(255,255,255,0.03);
-            border: 2px solid #333;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .plugin-option:hover {
-            border-color: #7b2cbf;
-            background: rgba(123, 44, 191, 0.1);
-        }
-
-        .plugin-option.selected {
-            border-color: #00d4ff;
-            background: rgba(0, 212, 255, 0.1);
-        }
-
-        .plugin-option .material-icons {
-            font-size: 32px;
-            color: #7b2cbf;
-            margin-bottom: 10px;
-        }
-
-        .plugin-option .name {
-            font-size: 0.9rem;
+        /* Alerts */
+        .alert {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
             font-weight: 500;
+            margin-bottom: var(--space-5);
+        }
+
+        .alert-success {
+            background: var(--green-light);
+            color: #1a7f37;
+        }
+
+        .alert-error {
+            background: var(--red-light);
+            color: #d1242f;
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .modal-backdrop.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 520px;
+            max-height: 80vh;
+            overflow: hidden;
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.25s ease;
+        }
+
+        .modal-backdrop.open .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            padding: var(--space-5) var(--space-6);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 19px;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: var(--space-6);
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .modal-description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-5);
+        }
+
+        /* Toggle list */
+        .toggle-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-3) 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .toggle-row:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .toggle-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .toggle-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* iOS-style toggle */
+        .toggle-switch {
+            width: 51px;
+            height: 31px;
+            background: var(--bg-tertiary);
+            border-radius: 16px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.25s ease;
+        }
+
+        .toggle-switch.on {
+            background: var(--green);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 27px;
+            height: 27px;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+            transition: transform 0.25s ease;
+        }
+
+        .toggle-switch.on::after {
+            transform: translateX(20px);
+        }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .main { margin-left: 0; }
+            .form-grid { grid-template-columns: 1fr; }
+            .plugin-grid { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <div class="logo-icon">
-                    <span class="material-icons">hub</span>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">F</div>
+                    <span class="logo-text">Fractal</span>
                 </div>
-                <h1>Fractal Connector</h1>
-            </div>
-            <div class="status-badge">
-                <span class="status-dot" id="statusDot"></span>
-                <span id="statusText">Connecting...</span>
-            </div>
-        </header>
-
-        <!-- Fractal Connection -->
-        <div class="card">
-            <h2><span class="material-icons">cloud</span> Fractal Cloud Connection</h2>
-            <div id="fractalMessage" class="message hidden"></div>
-            <div class="form-group">
-                <label class="form-label">Fractal Server URL</label>
-                <input type="text" class="form-input" id="fractalUrl" placeholder="wss://fractal.example.com/ws">
-            </div>
-            <div class="form-group">
-                <label class="form-label">API Key</label>
-                <input type="password" class="form-input" id="apiKey" placeholder="Enter your API key">
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-primary" onclick="saveFractalConfig()">
-                    <span class="material-icons">save</span> Save
-                </button>
-            </div>
-        </div>
-
-        <!-- Add Data Source -->
-        <div class="card">
-            <h2><span class="material-icons">add_circle</span> Add Data Source</h2>
-            <div id="addSourceMessage" class="message hidden"></div>
-
-            <div class="form-group">
-                <label class="form-label">Select Data Source Type</label>
-                <div class="plugin-grid" id="pluginGrid"></div>
             </div>
 
-            <div class="form-group">
-                <label class="form-label">Connection Name</label>
-                <input type="text" class="form-input" id="sourceName" placeholder="e.g., Production Database">
-            </div>
-
-            <div id="credentialFields" class="dynamic-fields hidden">
-                <div class="dynamic-fields-header">Connection Credentials</div>
-                <div id="credentialFieldsContainer"></div>
-            </div>
-
-            <div class="btn-group">
-                <button class="btn btn-secondary" onclick="testConnection()">
-                    <span class="material-icons">wifi_tethering</span> Test Connection
-                </button>
-                <button class="btn btn-primary" onclick="addSource()">
-                    <span class="material-icons">add</span> Add Source
-                </button>
-            </div>
-        </div>
-
-        <!-- Active Sources -->
-        <div class="card">
-            <h2><span class="material-icons">storage</span> Active Data Sources</h2>
-            <div id="sourceList" class="source-list">
-                <div class="empty-state">
-                    <span class="material-icons">inbox</span>
-                    <p>No data sources configured yet</p>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">General</div>
+                    <a href="#" class="nav-item active">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                        Dashboard
+                    </a>
                 </div>
+                <div class="nav-section">
+                    <div class="nav-title">Settings</div>
+                    <a href="#" class="nav-item" onclick="openSettings(); return false;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                        Connectors
+                    </a>
+                    <a href="/logout" class="nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                        Sign Out
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="status">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span class="status-label" id="statusText">Connecting...</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="main-header">
+                <h1 class="main-title">Dashboard</h1>
+                <button class="btn btn-secondary" onclick="openSettings()">Settings</button>
+            </header>
+
+            <div class="main-content">
+                <section class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Cloud Connection</h2>
+                        <p class="section-subtitle">Connect to your Fractal Cloud instance</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="fractalMessage" class="alert hidden"></div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Server URL</label>
+                                    <input type="url" class="form-input" id="fractalUrl" placeholder="wss://fractal.example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">API Key</label>
+                                    <input type="password" class="form-input" id="apiKey" placeholder="Enter API key">
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-primary" onclick="saveFractalConfig()">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Data Sources</h2>
+                        <p class="section-subtitle">Add a new data source connection</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="addSourceMessage" class="alert hidden"></div>
+                            <div class="form-group">
+                                <label class="form-label">Source Type</label>
+                                <div class="plugin-grid" id="pluginGrid"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-input" id="sourceName" placeholder="My Database">
+                            </div>
+                            <div id="credentialFields" class="credentials-panel hidden">
+                                <div class="credentials-title">Connection Details</div>
+                                <div id="credentialFieldsContainer"></div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-secondary" onclick="testConnection()">Test</button>
+                                <button class="btn btn-primary" onclick="addSource()">Add Source</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Active Sources</h2>
+                        <p class="section-subtitle">Your connected data sources</p>
+                    </div>
+                    <div class="card">
+                        <div id="sourceList" class="source-list"></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-backdrop" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Connectors</h2>
+                <button class="btn btn-ghost" onclick="closeSettings()">Done</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">Enable or disable connector types</p>
+                <div class="toggle-list" id="pluginToggleList"></div>
             </div>
         </div>
     </div>
@@ -435,15 +876,24 @@
     <script>
         let plugins = [];
         let selectedPlugin = null;
+        let enabledPlugins = JSON.parse(localStorage.getItem('enabledPlugins') || '{}');
 
-        // Load initial data
+        const icons = {
+            'description': '📄', 'cloud_download': '☁️', 'api': '🔌', 'storage': '💾',
+            'dns': '🗄️', 'forest': '🌲', 'ac_unit': '❄️', 'database': '🗃️',
+            'search': '🔍', 'memory': '💽', 'cloud': '☁️', 'cloud_circle': '☁️',
+            'cloud_queue': '☁️', 'table_chart': '📊', 'folder_shared': '📁',
+            'stream': '📡', 'show_chart': '📈', 'trending_up': '📈',
+            'analytics': '📊', 'account_balance': '🏦', 'insights': '💡',
+            'bar_chart': '📊', 'query_stats': '📉', 'currency_bitcoin': '₿',
+            'paid': '💰', 'newspaper': '📰', 'gavel': '⚖️', 'extension': '🧩'
+        };
+
         async function init() {
             await loadPlugins();
             await loadSources();
             await loadFractalConfig();
             updateStatus();
-
-            // Poll status every 5 seconds
             setInterval(updateStatus, 5000);
         }
 
@@ -451,277 +901,123 @@
             try {
                 const res = await fetch('/api/plugins');
                 plugins = await res.json();
+                plugins.forEach(p => { if (enabledPlugins[p.id] === undefined) enabledPlugins[p.id] = true; });
+                localStorage.setItem('enabledPlugins', JSON.stringify(enabledPlugins));
                 renderPluginGrid();
-            } catch (e) {
-                console.error('Failed to load plugins:', e);
-            }
+                renderPluginToggles();
+            } catch (e) { console.error('Failed to load plugins:', e); }
         }
 
         function renderPluginGrid() {
-            const grid = document.getElementById('pluginGrid');
-            grid.innerHTML = plugins.map(p => `
-                <div class="plugin-option" data-plugin="${p.id}" onclick="selectPlugin('${p.id}')">
-                    <span class="material-icons">${p.icon || 'extension'}</span>
-                    <div class="name">${p.name}</div>
+            document.getElementById('pluginGrid').innerHTML = plugins.filter(p => enabledPlugins[p.id]).map(p => `
+                <div class="plugin-item ${selectedPlugin?.id === p.id ? 'selected' : ''}" onclick="selectPlugin('${p.id}')">
+                    <div class="plugin-icon">${icons[p.icon] || '🧩'}</div>
+                    <div class="plugin-name">${p.name}</div>
                 </div>
             `).join('');
         }
 
-        function selectPlugin(pluginId) {
-            selectedPlugin = plugins.find(p => p.id === pluginId);
+        function renderPluginToggles() {
+            document.getElementById('pluginToggleList').innerHTML = plugins.map(p => `
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-icon">${icons[p.icon] || '🧩'}</div>
+                        <span class="toggle-name">${p.name}</span>
+                    </div>
+                    <div class="toggle-switch ${enabledPlugins[p.id] ? 'on' : ''}" onclick="togglePlugin('${p.id}')"></div>
+                </div>
+            `).join('');
+        }
 
-            // Update UI selection
-            document.querySelectorAll('.plugin-option').forEach(el => {
-                el.classList.toggle('selected', el.dataset.plugin === pluginId);
-            });
+        function togglePlugin(id) {
+            enabledPlugins[id] = !enabledPlugins[id];
+            localStorage.setItem('enabledPlugins', JSON.stringify(enabledPlugins));
+            renderPluginGrid();
+            renderPluginToggles();
+        }
 
-            // Render credential fields
+        function selectPlugin(id) {
+            selectedPlugin = plugins.find(p => p.id === id);
+            renderPluginGrid();
             renderCredentialFields();
         }
 
         function renderCredentialFields() {
             const container = document.getElementById('credentialFieldsContainer');
             const wrapper = document.getElementById('credentialFields');
-
-            if (!selectedPlugin || !selectedPlugin.credential_fields.length) {
-                wrapper.classList.add('hidden');
-                return;
-            }
-
+            if (!selectedPlugin?.credential_fields?.length) { wrapper.classList.add('hidden'); return; }
             wrapper.classList.remove('hidden');
-
-            container.innerHTML = selectedPlugin.credential_fields.map(field => {
-                let input = '';
-
-                if (field.type === 'select') {
-                    const options = field.options.map(opt =>
-                        `<option value="${opt.value}">${opt.label}</option>`
-                    ).join('');
-                    input = `<select class="form-select" id="cred_${field.name}">${options}</select>`;
-                } else if (field.type === 'checkbox') {
-                    input = `<input type="checkbox" id="cred_${field.name}" ${field.default ? 'checked' : ''}>`;
-                } else {
-                    const inputType = field.type === 'password' ? 'password' : 'text';
-                    input = `<input type="${inputType}" class="form-input" id="cred_${field.name}"
-                             placeholder="${field.placeholder || ''}" value="${field.default || ''}">`;
-                }
-
-                return `
-                    <div class="form-group">
-                        <label class="form-label">${field.label}${field.required ? ' *' : ''}</label>
-                        ${input}
-                        ${field.help_text ? `<small style="color: #666; font-size: 0.8rem;">${field.help_text}</small>` : ''}
-                    </div>
-                `;
+            container.innerHTML = selectedPlugin.credential_fields.map(f => {
+                const input = f.type === 'select'
+                    ? `<select class="form-input" id="cred_${f.name}">${f.options.map(o => `<option value="${o.value}">${o.label}</option>`).join('')}</select>`
+                    : `<input type="${f.type === 'password' ? 'password' : 'text'}" class="form-input" id="cred_${f.name}" placeholder="${f.placeholder || ''}" value="${f.default || ''}">`;
+                return `<div class="form-group"><label class="form-label">${f.label}${f.required ? ' *' : ''}</label>${input}</div>`;
             }).join('');
         }
 
         function getCredentialValues() {
             if (!selectedPlugin) return {};
-
-            const values = {};
-            selectedPlugin.credential_fields.forEach(field => {
-                const el = document.getElementById(`cred_${field.name}`);
-                if (el) {
-                    if (field.type === 'checkbox') {
-                        values[field.name] = el.checked;
-                    } else {
-                        values[field.name] = el.value;
-                    }
-                }
-            });
-            return values;
+            return Object.fromEntries(selectedPlugin.credential_fields.map(f => [f.name, document.getElementById(`cred_${f.name}`)?.value]));
         }
 
         async function testConnection() {
-            if (!selectedPlugin) {
-                showMessage('addSourceMessage', 'Please select a data source type', 'error');
-                return;
-            }
-
-            const credentials = getCredentialValues();
-
+            if (!selectedPlugin) return showMessage('addSourceMessage', 'Select a source type', 'error');
             try {
-                const res = await fetch('/api/sources/test', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        plugin_type: selectedPlugin.id,
-                        credentials: credentials
-                    })
-                });
-
+                const res = await fetch('/api/sources/test', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ plugin_type: selectedPlugin.id, credentials: getCredentialValues() }) });
                 const data = await res.json();
                 showMessage('addSourceMessage', data.message, data.success ? 'success' : 'error');
-            } catch (e) {
-                showMessage('addSourceMessage', 'Connection test failed', 'error');
-            }
+            } catch (e) { showMessage('addSourceMessage', 'Connection failed', 'error'); }
         }
 
         async function addSource() {
-            if (!selectedPlugin) {
-                showMessage('addSourceMessage', 'Please select a data source type', 'error');
-                return;
-            }
-
+            if (!selectedPlugin) return showMessage('addSourceMessage', 'Select a source type', 'error');
             const name = document.getElementById('sourceName').value;
-            if (!name) {
-                showMessage('addSourceMessage', 'Please enter a connection name', 'error');
-                return;
-            }
-
-            const credentials = getCredentialValues();
-
+            if (!name) return showMessage('addSourceMessage', 'Enter a name', 'error');
             try {
-                const res = await fetch('/api/sources', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        plugin_type: selectedPlugin.id,
-                        name: name,
-                        credentials: credentials
-                    })
-                });
-
+                const res = await fetch('/api/sources', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ plugin_type: selectedPlugin.id, name, credentials: getCredentialValues() }) });
                 const data = await res.json();
-
-                if (data.success) {
-                    showMessage('addSourceMessage', 'Data source added successfully!', 'success');
-                    document.getElementById('sourceName').value = '';
-                    await loadSources();
-                } else {
-                    showMessage('addSourceMessage', data.error, 'error');
-                }
-            } catch (e) {
-                showMessage('addSourceMessage', 'Failed to add data source', 'error');
-            }
+                if (data.success) { showMessage('addSourceMessage', 'Source added', 'success'); document.getElementById('sourceName').value = ''; await loadSources(); }
+                else showMessage('addSourceMessage', data.error, 'error');
+            } catch (e) { showMessage('addSourceMessage', 'Failed to add source', 'error'); }
         }
 
         async function loadSources() {
-            try {
-                const res = await fetch('/api/sources');
-                const sources = await res.json();
-                renderSources(sources);
-            } catch (e) {
-                console.error('Failed to load sources:', e);
-            }
+            try { const res = await fetch('/api/sources'); renderSources(await res.json()); } catch (e) {}
         }
 
         function renderSources(sources) {
             const list = document.getElementById('sourceList');
-
-            if (!sources.length) {
-                list.innerHTML = `
-                    <div class="empty-state">
-                        <span class="material-icons">inbox</span>
-                        <p>No data sources configured yet</p>
-                    </div>
-                `;
-                return;
-            }
-
+            if (!sources.length) { list.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><p class="empty-text">No data sources connected</p></div>`; return; }
             list.innerHTML = sources.map(s => {
                 const plugin = plugins.find(p => p.id === s.plugin_type);
-                return `
-                    <div class="source-item">
-                        <div class="source-info">
-                            <div class="source-icon">
-                                <span class="material-icons">${plugin?.icon || 'extension'}</span>
-                            </div>
-                            <div>
-                                <div class="source-name">${s.name}</div>
-                                <div class="source-type">${plugin?.name || s.plugin_type}</div>
-                            </div>
-                        </div>
-                        <div class="source-actions">
-                            <button onclick="deleteSource('${s.id}')" class="delete" title="Delete">
-                                <span class="material-icons">delete</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
+                return `<div class="source-item"><div class="source-info"><div class="source-icon">${icons[plugin?.icon] || '🧩'}</div><div><div class="source-name">${s.name}</div><div class="source-type">${plugin?.name || s.plugin_type}</div></div></div><div class="source-actions"><span class="source-status">Active</span><button class="btn btn-icon" onclick="deleteSource('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></div></div>`;
             }).join('');
         }
 
-        async function deleteSource(sourceId) {
-            if (!confirm('Are you sure you want to remove this data source?')) return;
-
-            try {
-                await fetch(`/api/sources/${sourceId}`, {method: 'DELETE'});
-                await loadSources();
-            } catch (e) {
-                console.error('Failed to delete source:', e);
-            }
-        }
+        async function deleteSource(id) { if (!confirm('Remove this source?')) return; await fetch(`/api/sources/${id}`, { method: 'DELETE' }); await loadSources(); }
 
         async function loadFractalConfig() {
-            try {
-                const res = await fetch('/api/config/fractal');
-                const config = await res.json();
-
-                document.getElementById('fractalUrl').value = config.url || '';
-                if (config.has_api_key) {
-                    document.getElementById('apiKey').placeholder = '(API key configured)';
-                }
-            } catch (e) {
-                console.error('Failed to load config:', e);
-            }
+            try { const res = await fetch('/api/config/fractal'); const config = await res.json(); document.getElementById('fractalUrl').value = config.url || ''; if (config.has_api_key) document.getElementById('apiKey').placeholder = '••••••••'; } catch (e) {}
         }
 
         async function saveFractalConfig() {
-            const url = document.getElementById('fractalUrl').value;
-            const apiKey = document.getElementById('apiKey').value;
-
-            const body = {};
-            if (url) body.url = url;
-            if (apiKey) body.api_key = apiKey;
-
-            try {
-                const res = await fetch('/api/config/fractal', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(body)
-                });
-
-                const data = await res.json();
-                showMessage('fractalMessage', 'Configuration saved!', 'success');
-            } catch (e) {
-                showMessage('fractalMessage', 'Failed to save configuration', 'error');
-            }
+            const body = {}; const url = document.getElementById('fractalUrl').value; const apiKey = document.getElementById('apiKey').value;
+            if (url) body.url = url; if (apiKey) body.api_key = apiKey;
+            try { await fetch('/api/config/fractal', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body) }); showMessage('fractalMessage', 'Saved', 'success'); }
+            catch (e) { showMessage('fractalMessage', 'Failed to save', 'error'); }
         }
 
         async function updateStatus() {
-            try {
-                const res = await fetch('/api/status');
-                const status = await res.json();
-
-                const dot = document.getElementById('statusDot');
-                const text = document.getElementById('statusText');
-
-                if (status.fractal_connected) {
-                    dot.className = 'status-dot connected';
-                    text.textContent = 'Connected';
-                } else {
-                    dot.className = 'status-dot disconnected';
-                    text.textContent = 'Disconnected';
-                }
-            } catch (e) {
-                console.error('Failed to get status:', e);
-            }
+            try { const res = await fetch('/api/status'); const status = await res.json(); document.getElementById('statusDot').className = status.fractal_connected ? 'status-dot online' : 'status-dot offline'; document.getElementById('statusText').textContent = status.fractal_connected ? 'Connected' : 'Disconnected'; } catch (e) {}
         }
 
-        function showMessage(elementId, message, type) {
-            const el = document.getElementById(elementId);
-            el.textContent = message;
-            el.className = `message ${type}`;
-            el.classList.remove('hidden');
+        function openSettings() { document.getElementById('settingsModal').classList.add('open'); }
+        function closeSettings() { document.getElementById('settingsModal').classList.remove('open'); }
+        document.getElementById('settingsModal').addEventListener('click', e => { if (e.target.id === 'settingsModal') closeSettings(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSettings(); });
 
-            setTimeout(() => {
-                el.classList.add('hidden');
-            }, 5000);
-        }
+        function showMessage(id, msg, type) { const el = document.getElementById(id); el.textContent = msg; el.className = `alert alert-${type}`; el.classList.remove('hidden'); setTimeout(() => el.classList.add('hidden'), 3000); }
 
-        // Initialize
         init();
     </script>
 </body>
